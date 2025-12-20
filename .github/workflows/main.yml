@@ -8,13 +8,18 @@ on:
 jobs:
   deploy-folders:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        folder: [CSS-3D-clickable-flip-cards,Parallax-scrolling]  # list of folders
-
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Deploy all subfolders
+      run: |
+        for folder in */ ; do
+          folder_name=$(basename "$folder")
+          echo "Deploying $folder_name..."
+          npx gh-pages -d "$folder" -b CSS-3D-clickable-flip-cards-main-pages -f "$folder_name"
+        done
 
     - name: Check if folder changed
       id: changes
