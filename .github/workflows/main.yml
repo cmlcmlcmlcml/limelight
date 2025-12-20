@@ -8,27 +8,23 @@ on:
 jobs:
   deploy-folders:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder: [CSS-3D-clickable-flip-cards-main, Parallax-scrolling]  # list of folders
+
     steps:
-      # 1️⃣ Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # 2️⃣ Deploy CSS-3D-clickable-flip-cards
-      - name: Deploy CSS-3D-clickable-flip-cards
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./CSS-3D-clickable-flip-cards
-          publish_branch: publish-pages
-          destination_dir: CSS-3D-clickable-flip-cards
-          keep_files: true
+    - name: Check if folder changed
+      id: changes
+      run: |
+        echo "CHANGED=$(git diff --name-only ${{ github.sha }} ${{ github.sha }}~1 | grep -E '^${{ matrix.folder }}/' || true)" >> $GITHUB_ENV
 
-      # 3️⃣ Deploy Parallax-scrolling
-      - name: Deploy Parallax-scrolling
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./Parallax-scrolling
-          publish_branch: publish-pages
-          destination_dir: Parallax-scrolling
-          keep_files: true
+    - name: Deploy if changed
+      if: env.CHANGED != ''
+      uses: peaceiris/actions-gh-pages@v6
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./${{ matrix.folder }}
+        publish_branch: publish-pages
