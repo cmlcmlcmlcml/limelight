@@ -23,7 +23,8 @@ jobs:
 
     - name: Deploy if changed
       if: env.CHANGED != ''
-      uses: peaceiris/actions-gh-pages@v6
+      uses: peaceiris/actions-gh-pages@v4
+
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./${{ matrix.folder }}
