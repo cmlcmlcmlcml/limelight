@@ -12,6 +12,8 @@ jobs:
       # 1️⃣ Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Install gh-pages
+        run: npm install -g gh-pages
 
       # 2️⃣ Find all top-level folders
       - name: List folders
