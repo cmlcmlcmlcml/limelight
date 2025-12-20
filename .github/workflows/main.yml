@@ -1,4 +1,4 @@
-name: Publish all folders to GitHub Pages
+name: Publish multiple folders to GitHub Pages
 
 on:
   push:
@@ -12,22 +12,23 @@ jobs:
       # 1️⃣ Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Install gh-pages
-        run: npm install -g gh-pages
 
-      # 2️⃣ Find all top-level folders
-      - name: List folders
-        id: folders
-        run: |
-          echo "FOLDERS=$(find . -maxdepth 1 -type d ! -name '.' ! -name '.github' ! -name 'node_modules' ! -name '.git' | sed 's|^\./||' | tr '\n' ' ')" >> $GITHUB_ENV
-          echo "Found folders: $FOLDERS"
+      # 2️⃣ Deploy CSS-3D-clickable-flip-cards
+      - name: Deploy CSS-3D-clickable-flip-cards
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./CSS-3D-clickable-flip-cards
+          publish_branch: publish-pages
+          destination_dir: CSS-3D-clickable-flip-cards
+          keep_files: true
 
-      # 3️⃣ Deploy each folder to the Pages branch
-      - name: Deploy all folders
-        run: |
-          for folder in $FOLDERS; do
-            echo "Deploying $folder..."
-            gh-pages -d "$folder" -b publish-pages -f "$folder"
-          done
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 3️⃣ Deploy Parallax-scrolling
+      - name: Deploy Parallax-scrolling
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./Parallax-scrolling
+          publish_branch: publish-pages
+          destination_dir: Parallax-scrolling
+          keep_files: true
