@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: [CardsProd, Parallax]  # list of folders
+        folder: [CSS-3D-clickable-flip-cards]  # list of folders
 
     steps:
     - name: Checkout repository
