@@ -9,6 +9,7 @@ jobs:
   deploy-folders:
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 1   # ✅ prevents push conflicts
       matrix:
         folder: [CSS-3D-clickable-flip-cards-main, Parallax-scrolling]
 
