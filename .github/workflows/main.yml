@@ -1,4 +1,4 @@
-name: Publish all folders to GitHub Pages
+name: Publish multiple folders to GitHub Pages
 
 on:
   push:
@@ -6,23 +6,27 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy-folders:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder: [CSS-3D-clickable-flip-cards-main, Parallax-scrolling]
+
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0   # IMPORTANT: allows diff + gh-pages push
 
-    - name: Prepare full site
+    - name: Check if folder changed
+      id: changes
       run: |
-        mkdir -p full-site
-        cp -r CSS-3D-clickable-flip-cards-main/* full-site/${{ 'CSS-3D-clickable-flip-cards-main' }}/
-        cp -r Parallax-scrolling/* full-site/${{ 'Parallax-scrolling' }}/
-        # Add more cp lines for additional folders
+        echo "CHANGED=$(git diff --name-only HEAD HEAD~1 | grep -E '^${{ matrix.folder }}/' || true)" >> $GITHUB_ENV
 
-    - name: Deploy full site
+    - name: Deploy if changed
+      if: env.CHANGED != ''
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./full-site
+        publish_dir: ./${{ matrix.folder }}
         publish_branch: publish-pages
-        force_orphan: true  # Now safe—no overwriting partial content
