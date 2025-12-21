@@ -6,26 +6,22 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy-folders:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder: [CSS-3D-clickable-flip-cards-main, Parallax-scrolling]
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - name: Deploy CSS-3D-clickable-flip-cards-main
+    - name: Deploy folder
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./CSS-3D-clickable-flip-cards-main
+        publish_dir: ./${{ matrix.folder }}
         publish_branch: publish-pages
-        destination_dir: CSS-3D-clickable-flip-cards-main
-
-    - name: Deploy Parallax-scrolling
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./Parallax-scrolling
-        publish_branch: publish-pages
-        destination_dir: Parallax-scrolling
+        destination_dir: ${{ matrix.folder }}
