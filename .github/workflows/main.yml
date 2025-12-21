@@ -30,3 +30,10 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./${{ matrix.folder }}
         publish_branch: publish-pages
+    
+    - name: Reset publish-pages branch
+      run: |
+        git fetch origin publish-pages
+        git checkout publish-pages || git checkout --orphan publish-pages
+        git reset --hard origin/main
+        git push origin publish-pages --force
