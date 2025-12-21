@@ -10,11 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: [CSS-3D-clickable-flip-cards-main, Parallax-scrolling]  # list of folders
+        folder: [CSS-3D-clickable-flip-cards-main, Parallax-scrolling]  # add more as needed
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4  # Updated to latest
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2  # Ensures we have the previous commit for diff
 
     - name: Check if folder changed
       id: changes
@@ -28,6 +30,6 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./${{ matrix.folder }}
-        destination_dir: ${{ matrix.folder }}  # Deploy into a subfolder named after the source
+        destination_dir: ${{ matrix.folder }}  # Keeps each in its own subfolder
         publish_branch: publish-pages
-        keep_files: true  # Crucial: preserves files from other folders/deployments
+        keep_files: true  # Preserves other folders' content
