@@ -16,7 +16,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0   # IMPORTANT: allows diff + gh-pages push
+        fetch-depth: 0   # REQUIRED for git diff + gh-pages push
 
     - name: Check if folder changed
       id: changes
