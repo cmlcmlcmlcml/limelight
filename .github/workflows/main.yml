@@ -10,21 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: [CSS-3D-clickable-flip-cards-main,Parallax-scrolling]  # list of folders
+        folder: [CSS-3D-clickable-flip-cards-main, Parallax-scrolling]  # list of folders
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4  # Updated to latest
 
     - name: Check if folder changed
       id: changes
       run: |
-        echo "CHANGED=$(git diff --name-only ${{ github.sha }} ${{ github.sha }}~1 | grep -E '^${{ matrix.folder }}/' || true)" >> $GITHUB_ENV
-    - name: Deploy if changed
-      if: env.CHANGED != ''
-      uses: peaceiris/actions-gh-pages@v4
+        CHANGED=$(git diff --name-only ${{ github.sha }}~1 ${{ github.sha }} | grep '^${{ matrix.folder }}/' || echo "")
+        echo "changed=$CHANGED" >> $GITHUB_OUTPUT
 
+    - name: Deploy if changed
+      if: steps.changes.outputs.changed != ''
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./${{ matrix.folder }}
+        destination_dir: ${{ matrix.folder }}  # Deploy into a subfolder named after the source
         publish_branch: publish-pages
+        keep_files: true  # Crucial: preserves files from other folders/deployments
