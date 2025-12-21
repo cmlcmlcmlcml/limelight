@@ -16,12 +16,12 @@ body {
 }
 .background {
   background-image: url("img/bg.png");
-  background-position: top center;      /* center horizontally */
-  background-size: cover;               /* fill entire area */
-  background-repeat: no-repeat;         /* prevent tiling */
+  background-position: top center;    
+  background-size: cover;              
+  background-repeat: no-repeat;        
   
   width: 100%;
-  min-height: 100%;                    /* ensure full height */
+  min-height: 100%;                    
   
   position: relative;
   z-index: 1;
@@ -64,11 +64,11 @@ h1 {
 .content {
   display: flex;
   flex-direction: column;
-  align-items: center;       /* center horizontally */
+  align-items: center;      
   justify-content: flex-start;
   text-align: center;
   width: 100%;
-  padding: 2% 5%;            /* relative padding */
+  padding: 2% 5%;            
   box-sizing: border-box;
 }
 
@@ -76,22 +76,22 @@ h1 {
 
 .text {
   display: flex;
-  flex-direction: column; /* stack image and lyrics vertically */
-  align-items: center;    /* center everything horizontally */
-  text-align: center;     /* center the text inside lyrics */
-  padding: 2rem;          /* optional spacing around content */
+  flex-direction: column;
+  align-items: center;    
+  text-align: center;    
+  padding: 2rem;          
 }
 
 .text img {
   width: 80%;
-  max-width: 400px; /* doesn’t explode on desktop */
+  max-width: 400px;
   height: auto;
   margin-bottom: 1.5rem;
 }
 
 
 .lyrics p {
-  margin-bottom: 1.5rem;  /* space between paragraphs */
+  margin-bottom: 1.5rem; 
   line-height: 1.5;
 }
 
