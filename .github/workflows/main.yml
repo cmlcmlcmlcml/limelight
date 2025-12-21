@@ -27,4 +27,3 @@ jobs:
         destination_dir: ${{ matrix.folder }}  # Deploys into /folder-name/ on the site
         publish_branch: publish-pages
         keep_files: true                      # Keeps other folders intact
-        force_orphan: true                    # Optional: keeps branch history clean (one commit with full state)
