@@ -18,18 +18,10 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Check if folder changed
-      id: changes
-      run: |
-        CHANGED=$(git diff --name-only HEAD^ HEAD | grep -E "^${{ matrix.folder }}/" || true)
-        echo "CHANGED=$CHANGED" >> $GITHUB_ENV
-        echo "Changed files:"
-        echo "$CHANGED"
-
-    - name: Deploy if changed
-      if: env.CHANGED != ''
+    - name: Deploy folder
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./${{ matrix.folder }}
         publish_branch: publish-pages
+        destination_dir: ${{ matrix.folder }}
