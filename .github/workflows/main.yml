@@ -8,22 +8,21 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        folder: 
-          - CSS-3D-clickable-flip-cards-main
-          - Parallax-scrolling
-          # Add more folders here as needed
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Deploy folder to GitHub Pages
+    - name: Prepare full site
+      run: |
+        mkdir -p full-site
+        cp -r CSS-3D-clickable-flip-cards-main/* full-site/${{ 'CSS-3D-clickable-flip-cards-main' }}/
+        cp -r Parallax-scrolling/* full-site/${{ 'Parallax-scrolling' }}/
+        # Add more cp lines for additional folders
+
+    - name: Deploy full site
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./${{ matrix.folder }}
-        destination_dir: ${{ matrix.folder }}  # Deploys into /folder-name/ on the site
+        publish_dir: ./full-site
         publish_branch: publish-pages
-        keep_files: true                      # Keeps other folders intact
+        force_orphan: true  # Now safe—no overwriting partial content
