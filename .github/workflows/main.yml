@@ -16,12 +16,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0   # REQUIRED for git diff + gh-pages push
+        fetch-depth: 0
 
     - name: Check if folder changed
       id: changes
       run: |
-        echo "CHANGED=$(git diff --name-only HEAD HEAD~1 | grep -E '^${{ matrix.folder }}/' || true)" >> $GITHUB_ENV
+        CHANGED=$(git diff --name-only HEAD^ HEAD | grep -E "^${{ matrix.folder }}/" || true)
+        echo "CHANGED=$CHANGED" >> $GITHUB_ENV
+        echo "Changed files:"
+        echo "$CHANGED"
 
     - name: Deploy if changed
       if: env.CHANGED != ''
@@ -30,10 +33,3 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./${{ matrix.folder }}
         publish_branch: publish-pages
-    
-    - name: Reset publish-pages branch
-      run: |
-        git fetch origin publish-pages
-        git checkout publish-pages || git checkout --orphan publish-pages
-        git reset --hard origin/main
-        git push origin publish-pages --force
