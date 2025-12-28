@@ -11,7 +11,7 @@ jobs:
     strategy:
       max-parallel: 1   # ✅ prevents push conflicts
       matrix:
-        folder: [CSS-3D-clickable-flip-cards-main, Parallax-scrolling]
+        folder: [CSS-3D-clickable-flip-cards-main, Parallax-scrolling, Responsive-web-design-Website]
 
     steps:
     - name: Checkout repository
